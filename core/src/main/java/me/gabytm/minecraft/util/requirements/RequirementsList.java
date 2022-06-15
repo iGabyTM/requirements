@@ -38,11 +38,20 @@ public class RequirementsList<T> {
     private final int minimumRequirements;
 
     public RequirementsList(@NotNull final List<Requirement<T>> requirements, final int minimumRequirements) {
+        if (minimumRequirements > requirements.size()) {
+            throw new IllegalArgumentException("minimumRequirements > requirements.size()");
+        }
+
         this.requirements = requirements;
         this.minimumRequirements = minimumRequirements;
     }
 
+    public RequirementsList(@NotNull final List<Requirement<T>> requirements) {
+        this(requirements, ALL_REQUIREMENTS);
+    }
+
     public boolean check(@Nullable final T t, @NotNull final Arguments arguments) {
+        // All requirements must match
         if (this.minimumRequirements == ALL_REQUIREMENTS) {
             for (final Requirement<T> requirement : this.requirements) {
                 if (!requirement.check(t, arguments) && !requirement.isOptional()) {
