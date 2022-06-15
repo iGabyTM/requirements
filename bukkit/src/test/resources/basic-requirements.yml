@@ -1,0 +1,6 @@
+parse:
+  one:
+    type: '>'
+    left: 5
+    right: 3
+    optional: true

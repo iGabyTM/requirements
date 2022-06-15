@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+package me.gabytm.minecraft.util.requirements.tests.requirements;
+
 import com.google.common.primitives.Doubles;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -37,10 +39,12 @@ public class DoubleOption {
         if (temp != null) {
             doubleValue = temp;
         }
+
+        stringValue = input;
     }
 
     public Double get(@Nullable final Player player) {
-        return (doubleValue != null) ? doubleValue : Doubles.tryParse(stringValue);
+        return (doubleValue != null) ? doubleValue : Doubles.tryParse(stringValue.replace("%health%", Double.toString(player.getHealth())));
     }
 
 }

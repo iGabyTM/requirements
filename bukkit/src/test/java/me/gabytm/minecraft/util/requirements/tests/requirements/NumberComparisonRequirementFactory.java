@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+package me.gabytm.minecraft.util.requirements.tests.requirements;
+
 import me.gabytm.minecraft.util.requirements.RequirementFactory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;

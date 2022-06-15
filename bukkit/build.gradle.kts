@@ -3,11 +3,27 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
-    testCompileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     api(project(":requirements-core"))
+
+    // --- Testing
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.25.0")
+}
+
+tasks {
+    compileTestJava {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }

@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+package me.gabytm.minecraft.util.requirements.tests.requirements;
+
 import me.gabytm.minecraft.util.requirements.Arguments;
 import me.gabytm.minecraft.util.requirements.bukkit.PlayerRequirement;
 import org.bukkit.entity.Player;

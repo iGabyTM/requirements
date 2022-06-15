@@ -117,6 +117,15 @@ subprojects {
                 }
             }
         }
+
+        withType<PublishToMavenRepository> {
+            dependsOn("test")
+        }
+
+        withType<PublishToMavenLocal> {
+            dependsOn("test")
+        }
+
     }
 
 }
