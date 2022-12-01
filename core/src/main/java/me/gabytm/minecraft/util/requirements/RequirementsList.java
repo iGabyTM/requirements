@@ -30,14 +30,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class RequirementsList<T> {
+public class RequirementsList<R extends Requirement<T>, T> {
 
-    private static final int ALL_REQUIREMENTS = -1;
+    public static final int ALL_REQUIREMENTS = -1;
 
-    private final List<Requirement<T>> requirements;
+    private final List<R> requirements;
     private final int minimumRequirements;
 
-    public RequirementsList(@NotNull final List<Requirement<T>> requirements, final int minimumRequirements) {
+    public RequirementsList(@NotNull final List<R> requirements, final int minimumRequirements) {
         if (minimumRequirements > requirements.size()) {
             throw new IllegalArgumentException("minimumRequirements > requirements.size()");
         }
@@ -46,15 +46,16 @@ public class RequirementsList<T> {
         this.minimumRequirements = minimumRequirements;
     }
 
-    public RequirementsList(@NotNull final List<Requirement<T>> requirements) {
+    public RequirementsList(@NotNull final List<R> requirements) {
         this(requirements, ALL_REQUIREMENTS);
     }
 
     public boolean check(@Nullable final T t, @NotNull final Arguments arguments) {
         // All requirements must match
         if (this.minimumRequirements == ALL_REQUIREMENTS) {
-            for (final Requirement<T> requirement : this.requirements) {
+            for (final R requirement : this.requirements) {
                 if (!requirement.check(t, arguments) && !requirement.isOptional()) {
+                    requirement.onFail(t);
                     return false;
                 }
             }
@@ -64,10 +65,10 @@ public class RequirementsList<T> {
 
         int requirementsMeet = 0;
 
-        for (final Requirement<T> requirement : requirements) {
+        for (final R requirement : requirements) {
             final boolean result = requirement.check(t, arguments);
 
-            if (result) {
+            if (result || !requirement.isNegated() || requirement.isOptional()) {
                 requirementsMeet++;
             }
         }
