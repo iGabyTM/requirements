@@ -24,7 +24,7 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains:annotations:23.0.0")
+        api("org.jetbrains:annotations:23.0.0")
         testCompileOnly("org.jetbrains:annotations:23.0.0")
     }
 
@@ -113,7 +113,7 @@ subprojects {
                         password = System.getenv("MATT_REPO_PASSWORD")
                     }
 
-                    url = uri("https://repo.triumphteam.dev/snapshots/")
+                    url = uri("https://repo.triumphteam.dev/" + (if (project.version.toString().endsWith("SNAPSHOT")) "snapshots/" else "releases/"))
                 }
             }
         }
