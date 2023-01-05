@@ -34,8 +34,8 @@ import java.util.Map;
 
 public abstract class PlayerRequirement extends Requirement<Player> implements ConfigurationSerializable {
 
-    public PlayerRequirement(final @NotNull String name, boolean optional, boolean negated) {
-        super(name, optional, negated);
+    public PlayerRequirement(final @NotNull String name, boolean required, boolean optional, boolean negated) {
+        super(name, required, optional, negated);
     }
 
     @Override

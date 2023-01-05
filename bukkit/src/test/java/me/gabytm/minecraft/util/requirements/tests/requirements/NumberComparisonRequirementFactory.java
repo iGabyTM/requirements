@@ -65,7 +65,9 @@ public class NumberComparisonRequirementFactory implements RequirementFactory<Co
         final NumberComparisonRequirement.Operation operation = NumberComparisonRequirement.Operation.find(type);
         final DoubleOption left = new DoubleOption(source.getString("left"));
         final DoubleOption right = new DoubleOption(source.getString("right"));
-        return new NumberComparisonRequirement(source.getName(), source.getBoolean("optional"), negated, left, right, operation);
+        final boolean optional = source.getBoolean("optional");
+
+        return new NumberComparisonRequirement(source.getName(), !optional, optional, negated, left, right, operation);
     }
 
 }

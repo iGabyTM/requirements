@@ -38,8 +38,11 @@ public class NumberComparisonRequirement extends PlayerRequirement {
     private final DoubleOption right;
     private final Operation operation;
 
-    public NumberComparisonRequirement(@NotNull String name, boolean optional, boolean negated, DoubleOption left, DoubleOption right, Operation operation) {
-        super(name, optional, negated);
+    public NumberComparisonRequirement(
+            @NotNull String name, boolean required, boolean optional, boolean negated,
+            DoubleOption left, DoubleOption right, Operation operation
+    ) {
+        super(name, required, optional, negated);
         this.left = left;
         this.right = right;
         this.operation = operation;
@@ -60,6 +63,36 @@ public class NumberComparisonRequirement extends PlayerRequirement {
         }
 
         return operation.check(leftValue, rightValue);
+    }
+
+    @Override
+    public void onFail(@Nullable Player player) {
+        System.out.println("FAILED! " + this);
+    }
+
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public DoubleOption getLeft() {
+        return left;
+    }
+
+    public DoubleOption getRight() {
+        return right;
+    }
+
+    @Override
+    public String toString() {
+        return "NumberComparisonRequirement{" +
+                "left=" + left +
+                ", right=" + right +
+                ", operation=" + operation +
+                ", name='" + name + '\'' +
+                ", required=" + required +
+                ", optional=" + optional +
+                ", negated=" + negated +
+                '}';
     }
 
     public enum Operation {

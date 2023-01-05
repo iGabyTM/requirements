@@ -33,4 +33,8 @@ public class RequirementProcessor extends BukkitRequirementProcessor<Player> {
         return requirements;
     }
 
+    public YamlConfiguration getConfig() {
+        return config;
+    }
+
 }

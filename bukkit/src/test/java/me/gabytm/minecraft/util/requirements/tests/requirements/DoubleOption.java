@@ -28,6 +28,8 @@ import com.google.common.primitives.Doubles;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class DoubleOption {
 
     private Double doubleValue;
@@ -45,6 +47,19 @@ public class DoubleOption {
 
     public Double get(@Nullable final Player player) {
         return (doubleValue != null) ? doubleValue : Doubles.tryParse(stringValue.replace("%health%", Double.toString(player.getHealth())));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DoubleOption that = (DoubleOption) o;
+        return doubleValue.equals(that.doubleValue) && stringValue.equals(that.stringValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(doubleValue, stringValue);
     }
 
 }

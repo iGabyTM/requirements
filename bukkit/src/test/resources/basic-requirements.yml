@@ -1,6 +1,21 @@
 parse:
   one:
-    type: '>'
     left: 5
+    type: '>'
     right: 3
     optional: true
+
+minimumRequirements:
+  one: # Will pass, 5 > 3
+    left: 5
+    type: '>'
+    right: 3
+  two: # Will fail, 5 > 3, but it is optional
+    left: 5
+    type: '<'
+    right: 3
+    optional: true
+  three: # Will fail, 10 > 9
+    left: 10
+    type: '<'
+    right: 9
