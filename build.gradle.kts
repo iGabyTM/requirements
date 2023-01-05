@@ -24,7 +24,7 @@ subprojects {
     }
 
     dependencies {
-        api("org.jetbrains:annotations:23.0.0")
+        compileOnlyApi("org.jetbrains:annotations:23.0.0")
         testCompileOnly("org.jetbrains:annotations:23.0.0")
     }
 
