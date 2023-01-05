@@ -27,6 +27,7 @@ package me.gabytm.minecraft.util.requirements;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,14 +37,17 @@ public class RequirementsList<R extends Requirement<T>, T> {
 
     private final List<R> requirements;
     private final int minimumRequirements;
+    private final List<R> requirementsSorted;
 
     public RequirementsList(@NotNull final List<R> requirements, final int minimumRequirements) {
         if (minimumRequirements > requirements.size()) {
             throw new IllegalArgumentException("minimumRequirements > requirements.size()");
         }
 
-        this.requirements = requirements;
+        this.requirements = new ArrayList<>(requirements);
         this.minimumRequirements = minimumRequirements;
+        this.requirementsSorted = new ArrayList<>(requirements);
+        requirementsSorted.sort((a, b) -> Boolean.compare(a.isOptional(), b.isOptional()));
     }
 
     public RequirementsList(@NotNull final List<R> requirements) {
@@ -54,7 +58,8 @@ public class RequirementsList<R extends Requirement<T>, T> {
         // All requirements must match
         if (this.minimumRequirements == ALL_REQUIREMENTS) {
             for (final R requirement : this.requirements) {
-                if (!requirement.check(t, arguments) && !requirement.isOptional()) {
+                // The requirement failed
+                if (requirement.check(t, arguments) == !requirement.isNegated()) {
                     requirement.onFail(t);
                     return false;
                 }
@@ -65,12 +70,27 @@ public class RequirementsList<R extends Requirement<T>, T> {
 
         int requirementsMeet = 0;
 
-        for (final R requirement : requirements) {
+        for (final R requirement : requirementsSorted) {
             final boolean result = requirement.check(t, arguments);
 
-            if (result || !requirement.isNegated() || requirement.isOptional()) {
-                requirementsMeet++;
+            // The requirement is required and it failed
+            if (requirement.isRequired() && (result == requirement.isNegated())) {
+                requirement.onFail(t);
+                return false;
             }
+
+            // Early return if all required requirements were passed and the minimum amount of passed requirements was reached
+            if (!requirement.isRequired() && requirementsMeet >= minimumRequirements) {
+                return true;
+            }
+
+            // The requirement was passed or is optional
+            if (result != requirement.isNegated() || requirement.isOptional()) {
+                requirementsMeet++;
+                continue;
+            }
+
+            requirement.onFail(t);
         }
 
         return requirementsMeet > minimumRequirements;

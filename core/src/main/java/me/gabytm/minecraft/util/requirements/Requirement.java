@@ -33,11 +33,13 @@ import org.jetbrains.annotations.Nullable;
 public abstract class Requirement<T> {
 
     protected final String name;
+    protected final boolean required;
     protected final boolean optional;
     protected final boolean negated;
 
-    public Requirement(@NotNull final String name, final boolean optional, final boolean negated) {
+    public Requirement(@NotNull final String name, final boolean required, final boolean optional, final boolean negated) {
         this.name = name;
+        this.required = required;
         this.optional = optional;
         this.negated = negated;
     }
@@ -49,6 +51,15 @@ public abstract class Requirement<T> {
      */
     public @NotNull String getName() {
         return name;
+    }
+
+    /**
+     * Whether the requirement is required, used only when {@link RequirementsList}'s {@code minimumRequirements} is not {@link RequirementsList#ALL_REQUIREMENTS}
+     *
+     * @return whether the requirement is required
+     */
+    public boolean isRequired() {
+        return required;
     }
 
     /**
