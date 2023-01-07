@@ -59,7 +59,7 @@ public class RequirementsList<R extends Requirement<T>, T> {
         if (this.minimumRequirements == ALL_REQUIREMENTS) {
             for (final R requirement : this.requirements) {
                 // The requirement failed
-                if (requirement.check(t, arguments) == !requirement.isNegated()) {
+                if (requirement.check(t, arguments) == requirement.isNegated()) {
                     requirement.onFail(t);
                     return false;
                 }
