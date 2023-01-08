@@ -59,7 +59,7 @@ public class RequirementsList<R extends Requirement<T>, T> {
         if (this.minimumRequirements == ALL_REQUIREMENTS) {
             for (final R requirement : this.requirements) {
                 // The requirement failed
-                if (requirement.check(t, arguments) == requirement.isNegated()) {
+                if (!requirement.check(t, arguments)) {
                     requirement.onFail(t);
                     return false;
                 }
@@ -74,7 +74,7 @@ public class RequirementsList<R extends Requirement<T>, T> {
             final boolean result = requirement.check(t, arguments);
 
             // The requirement is required and it failed
-            if (requirement.isRequired() && (result == requirement.isNegated())) {
+            if (requirement.isRequired() && !result) {
                 requirement.onFail(t);
                 return false;
             }
@@ -85,7 +85,7 @@ public class RequirementsList<R extends Requirement<T>, T> {
             }
 
             // The requirement was passed or is optional
-            if (result != requirement.isNegated() || requirement.isOptional()) {
+            if (result || requirement.isOptional()) {
                 requirementsMeet++;
                 continue;
             }
