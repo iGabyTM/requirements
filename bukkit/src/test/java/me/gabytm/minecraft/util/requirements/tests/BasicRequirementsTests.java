@@ -58,7 +58,7 @@ public class BasicRequirementsTests {
         Assertions.assertEquals(numberComparisonRequirement.getOperation(), NumberComparisonRequirement.Operation.GREATER, "Operation to be GREATER (>)");
         Assertions.assertEquals(numberComparisonRequirement.getLeft(), new DoubleOption("5"), "Left number to be 5");
         Assertions.assertEquals(numberComparisonRequirement.getRight(), new DoubleOption("3"), "Right number to be 3");
-        Assertions.assertTrue(requirement.check(player, Arguments.of(Map.of())));
+        Assertions.assertTrue(new RequirementsList<>(List.of(requirement)).check(player, Arguments.of(Map.of())));
     }
 
     @Test
