@@ -37,7 +37,7 @@ public class RequirementsList<R extends Requirement<T>, T> {
 
     private final List<R> requirements;
     private final int minimumRequirements;
-    private final List<R> requirementsSorted;
+    transient private final List<R> requirementsSorted;
 
     public RequirementsList(@NotNull final List<R> requirements, final int minimumRequirements) {
         if (minimumRequirements > requirements.size()) {
